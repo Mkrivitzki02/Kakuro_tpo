@@ -224,40 +224,68 @@ public class Tablero {
      * - Las celdas negras con claves se muestran con el token original (ej "12/0").
      */
     public void imprimirConClaves(boolean mostrarSolucion) {
+        // Ancho fijo por celda para alinear la impresión
+    final int ancho = 6;
         for (int i = 0; i < tokensOriginal.length; i++) {
+            StringBuilder fila = new StringBuilder();
             for (int j = 0; j < tokensOriginal[0].length; j++) {
                 String tok = tokensOriginal[i][j];
                 if (tok == null) tok = "X";
+
+                String contenido;
                 if (tok.equals("X")) {
-                    System.out.print("X ");
+                    contenido = "X";
                 } else if (tok.contains("/")) {
                     // Mostrar la clave tal cual (vertical/horizontal)
-                    System.out.print(tok + " ");
+                    contenido = tok;
                 } else {
-                    // Celda blanca (".")
+                    // Celda blanca
                     Celda cel = matriz[i][j];
                     if (mostrarSolucion && cel != null) {
                         int val = cel.valor;
-                        System.out.print((val == 0 ? "0" : val) + " ");
+                        contenido = (val == 0 ? "0" : Integer.toString(val));
                     } else {
-                        System.out.print("0 ");
+                        contenido = "0";
                     }
                 }
+
+                fila.append(padCenter(contenido, ancho));
             }
-            System.out.println();
+            System.out.println(fila.toString());
         }
     }
     public void imprimir() {
+    final int ancho = 6;
         for (int i = 0; i < matriz.length; i++) {
+            StringBuilder fila = new StringBuilder();
             for (int j = 0; j < matriz[0].length; j++) {
+                String contenido;
                 if (matriz[i][j] != null) {
                     int val = matriz[i][j].valor;
-                    System.out.print((val == 0 ? "0" : val) + " ");
+                    contenido = (val == 0 ? "0" : Integer.toString(val));
                 } else {
-                    System.out.print("X ");
+                    contenido = "X";
                 }
+                fila.append(padCenter(contenido, ancho));
             }
-            System.out.println();
+            System.out.println(fila.toString());
         }
+    }
+
+    /**
+     * Centra el texto dentro de un campo de ancho fijo. Si el texto es más largo
+     * que el ancho, se devuelve truncado a la longitud máxima.
+     */
+    private String padCenter(String s, int width) {
+        if (s == null) s = "";
+    if (s.length() >= width) return s.substring(0, width);
+        int totalPad = width - s.length();
+        int padLeft = totalPad / 2;
+        int padRight = totalPad - padLeft;
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < padLeft; i++) sb.append(' ');
+        sb.append(s);
+        for (int i = 0; i < padRight; i++) sb.append(' ');
+        return sb.toString();
     }
 }

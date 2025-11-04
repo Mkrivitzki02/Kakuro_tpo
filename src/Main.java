@@ -12,7 +12,7 @@ public class Main {
         // Archivo de entrada con el tablero inicial
         // Permitir pasar el archivo como argumento; si no se pasa, intentar
         // el nombre por defecto y buscar también en la carpeta `src/`.
-        String archivoEntrada = (args.length > 0) ? args[0] : "kakuro_facil.txt";
+        String archivoEntrada = (args.length > 0) ? args[0] : "kakuro_ejemplo.txt";
         java.io.File f = new java.io.File(archivoEntrada);
         if (!f.exists()) {
             // Intentar dentro de la carpeta src/ (ruta común en este proyecto)
