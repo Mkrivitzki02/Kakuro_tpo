@@ -10,13 +10,35 @@
 public class Main {
     public static void main(String[] args) {
         // Archivo de entrada con el tablero inicial
-        String archivoEntrada = "kakuro.txt";
+        // Permitir pasar el archivo como argumento; si no se pasa, intentar
+        // el nombre por defecto y buscar también en la carpeta `src/`.
+        String archivoEntrada = (args.length > 0) ? args[0] : "kakuro_facil.txt";
+        java.io.File f = new java.io.File(archivoEntrada);
+        if (!f.exists()) {
+            // Intentar dentro de la carpeta src/ (ruta común en este proyecto)
+            String alt = "src/" + archivoEntrada;
+            java.io.File f2 = new java.io.File(alt);
+            if (f2.exists()) {
+                archivoEntrada = alt;
+            }
+        }
 
         System.out.println("=================================================");
         System.out.println("    SOLVER DE KAKURO - ALGORITMO BACKTRACKING    ");
         System.out.println("=================================================\n");
 
-        // 1. CARGAR TABLERO desde archivo
+        // 1. MOSTRAR contenido del archivo de entrada y CARGAR TABLERO
+        System.out.println("Archivo de entrada: " + archivoEntrada + "\n");
+        try (java.io.BufferedReader br = new java.io.BufferedReader(new java.io.FileReader(archivoEntrada))) {
+            String l;
+            while ((l = br.readLine()) != null) {
+                System.out.println(l);
+            }
+        } catch (java.io.IOException e) {
+            System.err.println("No se pudo leer el archivo para imprimir su contenido: " + e.getMessage());
+        }
+
+        System.out.println();
         System.out.println("Cargando tablero desde: " + archivoEntrada);
         Tablero tablero = Tablero.leerDesdeArchivo(archivoEntrada);
         
@@ -28,6 +50,10 @@ public class Main {
         
         System.out.println("Tablero cargado exitosamente.");
         System.out.println("Celdas blancas a completar: " + tablero.getCeldasBlancas().size() + "\n");
+
+    System.out.println("Tablero parseado (claves y celdas vacías):");
+    tablero.imprimirConClaves(false);
+    System.out.println();
 
         // 2. CREAR SOLVER y resolver
         KakuroSolver solver = new KakuroSolver(tablero);
@@ -49,7 +75,7 @@ public class Main {
 
         if (exito) {
             System.out.println("✓ SOLUCIÓN ENCONTRADA:\n");
-            tablero.imprimir();
+            tablero.imprimirConClaves(true);
         } else {
             System.out.println("✗ No se encontró solución para este Kakuro.");
         }
