@@ -6,7 +6,7 @@
  * - Valor: número del 1 al 9, o 0 si está vacía
  * 
  * Las celdas blancas son las que el algoritmo de backtracking debe completar.
- * Cada celda blanca pertenece exactamente a un run horizontal y uno vertical.
+ * Cada celda blanca pertenece exactamente a un grupo horizontal y uno vertical.
  */
 public class Celda {
     /** Fila de la celda en el tablero (0-indexed) */

@@ -7,8 +7,8 @@ import java.util.*;
  * 
  * El tablero almacena:
  * - Matriz de celdas (blancas para completar, negras para claves/pistas)
- * - Runs horizontales y verticales (grupos de celdas que deben sumar un objetivo)
- * - Mapa para acceso rápido a los runs de cada celda
+ * - Grupos horizontales y verticales (grupos de celdas que deben sumar un objetivo)
+ * - Mapa para acceso rápido a los grupos de cada celda
  * 
  * Formato del archivo de entrada (kakuro.txt):
  * - "X" = celda negra (no se completa)
@@ -32,8 +32,8 @@ public class Tablero {
      * 1. Parsea cada línea del archivo separando tokens por espacios
     * 2. Crea celdas blancas para los "0"
      * 3. Identifica celdas con claves (formato "n/m")
-     * 4. Construye runs horizontales (hacia la derecha) y verticales (hacia abajo)
-     * 5. Valida que cada celda blanca pertenezca exactamente a 1 run H y 1 run V
+    * 4. Construye grupos horizontales (hacia la derecha) y verticales (hacia abajo)
+    * 5. Valida que cada celda blanca pertenezca exactamente a 1 grupo H y 1 grupo V
      * 
     * @param archivo Ruta del archivo con el tablero (ej: "src/kakuro.txt")
      * @return Tablero construido, o null si hay errores de formato/parsing
@@ -87,7 +87,7 @@ public class Tablero {
                         int sumaV = partes[0].equals("-") ? 0 : Integer.parseInt(partes[0]);
                         int sumaH = partes[1].equals("-") ? 0 : Integer.parseInt(partes[1]);
 
-                        // RUN HORIZONTAL: recolectar celdas hacia la DERECHA
+                        // GRUPO HORIZONTAL: recolectar celdas hacia la DERECHA
                         if (sumaH > 0) {
                             List<Celda> celdas = new ArrayList<>();
                             int col = j + 1;
@@ -97,16 +97,16 @@ public class Tablero {
                                 col++;
                             }
                             if (!celdas.isEmpty()) {
-                                GrupoSuma run = new GrupoSuma(sumaH, celdas);
-                                t.runsHorizontales.add(run);
+                                GrupoSuma grupo = new GrupoSuma(sumaH, celdas);
+                                t.runsHorizontales.add(grupo);
                                 // Mapear cada celda a su grupo horizontal
                                 for (Celda c : celdas) {
-                                    t.mapaRuns.put("H" + c.fila + "," + c.col, run);
+                                    t.mapaRuns.put("H" + c.fila + "," + c.col, grupo);
                                 }
                             }
                         }
 
-                        // RUN VERTICAL: recolectar celdas hacia ABAJO
+                        // GRUPO VERTICAL: recolectar celdas hacia ABAJO
                         if (sumaV > 0) {
                             List<Celda> celdas = new ArrayList<>();
                             int fil = i + 1;
@@ -116,11 +116,11 @@ public class Tablero {
                                 fil++;
                             }
                             if (!celdas.isEmpty()) {
-                                GrupoSuma run = new GrupoSuma(sumaV, celdas);
-                                t.runsVerticales.add(run);
+                                GrupoSuma grupo = new GrupoSuma(sumaV, celdas);
+                                t.runsVerticales.add(grupo);
                                 // Mapear cada celda a su grupo vertical
                                 for (Celda c : celdas) {
-                                    t.mapaRuns.put("V" + c.fila + "," + c.col, run);
+                                    t.mapaRuns.put("V" + c.fila + "," + c.col, grupo);
                                 }
                             }
                         }
@@ -129,12 +129,12 @@ public class Tablero {
             }
 
             // PASO 4: Validar integridad del tablero
-            // Cada celda blanca DEBE pertenecer exactamente a 1 run H y 1 run V
+            // Cada celda blanca DEBE pertenecer exactamente a 1 grupo H y 1 grupo V
             for (Celda c : t.celdasBlancas) {
                 String keyH = "H" + c.fila + "," + c.col;
                 String keyV = "V" + c.fila + "," + c.col;
                 if (!t.mapaRuns.containsKey(keyH) || !t.mapaRuns.containsKey(keyV)) {
-                    System.err.println("Error: celda sin run asignada en (" + c.fila + "," + c.col + ")");
+                    System.err.println("Error: celda sin grupo asignado en (" + c.fila + "," + c.col + ")");
                     return null;
                 }
             }
@@ -157,29 +157,29 @@ public class Tablero {
     }
 
     /**
-     * Obtiene el run horizontal al que pertenece una celda.
+     * Obtiene el grupo horizontal al que pertenece una celda.
      * 
-     * @param c Celda de la cual obtener el run horizontal
-     * @return Run horizontal que contiene esta celda
+     * @param c Celda de la cual obtener el grupo horizontal
+     * @return Grupo horizontal que contiene esta celda
      */
-    public GrupoSuma getRunHorizontal(Celda c) {
+    public GrupoSuma getGrupoHorizontal(Celda c) {
         return mapaRuns.get("H" + c.fila + "," + c.col);
     }
 
     /**
-     * Obtiene el run vertical al que pertenece una celda.
+     * Obtiene el grupo vertical al que pertenece una celda.
      * 
-     * @param c Celda de la cual obtener el run vertical
-     * @return Run vertical que contiene esta celda
+     * @param c Celda de la cual obtener el grupo vertical
+     * @return Grupo vertical que contiene esta celda
      */
-    public GrupoSuma getRunVertical(Celda c) {
+    public GrupoSuma getGrupoVertical(Celda c) {
         return mapaRuns.get("V" + c.fila + "," + c.col);
     }
 
     /**
-     * Valida que todos los runs del tablero cumplan sus restricciones:
-     * - La suma de las celdas debe igualar el objetivo
-     * - No puede haber números repetidos en un run
+    * Valida que todos los grupos del tablero cumplan sus restricciones:
+    * - La suma de las celdas debe igualar el objetivo
+    * - No puede haber números repetidos en un grupo
      * 
      * Se usa al final del backtracking para verificar la solución completa.
      * 
@@ -195,13 +195,13 @@ public class Tablero {
      * @return true si todas las sumas son válidas, false en caso contrario
      */
     public boolean validarSumasCompletas() {
-        // Verificar todos los runs horizontales
-        for (GrupoSuma run : runsHorizontales) {
-            if (!Validador.sumaEsValida(run)) return false;
+        // Verificar todos los grupos horizontales
+        for (GrupoSuma grupo : runsHorizontales) {
+            if (!Validador.sumaEsValida(grupo)) return false;
         }
-        // Verificar todos los runs verticales
-        for (GrupoSuma run : runsVerticales) {
-            if (!Validador.sumaEsValida(run)) return false;
+        // Verificar todos los grupos verticales
+        for (GrupoSuma grupo : runsVerticales) {
+            if (!Validador.sumaEsValida(grupo)) return false;
         }
         return true;
     }
