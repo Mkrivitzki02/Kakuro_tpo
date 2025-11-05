@@ -20,10 +20,10 @@ public class Tablero {
     private Celda[][] matriz;
     // Tokens originales leídos del archivo (ej: "X", ".", "12/0")
     private String[][] tokensOriginal;
-    private List<GrupoSuma> runsHorizontales = new ArrayList<>();
-    private List<GrupoSuma> runsVerticales = new ArrayList<>();
+    private List<GrupoSuma> gruposHorizontales = new ArrayList<>();
+    private List<GrupoSuma> gruposVerticales = new ArrayList<>();
     private List<Celda> celdasBlancas = new ArrayList<>();
-    private Map<String, GrupoSuma> mapaRuns = new HashMap<>();
+    private Map<String, GrupoSuma> mapaGrupos = new HashMap<>();
 
     /**
      * Lee y construye un tablero de Kakuro desde un archivo de texto.
@@ -98,10 +98,10 @@ public class Tablero {
                             }
                             if (!celdas.isEmpty()) {
                                 GrupoSuma grupo = new GrupoSuma(sumaH, celdas);
-                                t.runsHorizontales.add(grupo);
+                                t.gruposHorizontales.add(grupo);
                                 // Mapear cada celda a su grupo horizontal
                                 for (Celda c : celdas) {
-                                    t.mapaRuns.put("H" + c.fila + "," + c.col, grupo);
+                                    t.mapaGrupos.put("H" + c.fila + "," + c.col, grupo);
                                 }
                             }
                         }
@@ -117,10 +117,10 @@ public class Tablero {
                             }
                             if (!celdas.isEmpty()) {
                                 GrupoSuma grupo = new GrupoSuma(sumaV, celdas);
-                                t.runsVerticales.add(grupo);
+                                t.gruposVerticales.add(grupo);
                                 // Mapear cada celda a su grupo vertical
                                 for (Celda c : celdas) {
-                                    t.mapaRuns.put("V" + c.fila + "," + c.col, grupo);
+                                    t.mapaGrupos.put("V" + c.fila + "," + c.col, grupo);
                                 }
                             }
                         }
@@ -133,7 +133,7 @@ public class Tablero {
             for (Celda c : t.celdasBlancas) {
                 String keyH = "H" + c.fila + "," + c.col;
                 String keyV = "V" + c.fila + "," + c.col;
-                if (!t.mapaRuns.containsKey(keyH) || !t.mapaRuns.containsKey(keyV)) {
+                if (!t.mapaGrupos.containsKey(keyH) || !t.mapaGrupos.containsKey(keyV)) {
                     System.err.println("Error: celda sin grupo asignado en (" + c.fila + "," + c.col + ")");
                     return null;
                 }
@@ -163,7 +163,7 @@ public class Tablero {
      * @return Grupo horizontal que contiene esta celda
      */
     public GrupoSuma getGrupoHorizontal(Celda c) {
-        return mapaRuns.get("H" + c.fila + "," + c.col);
+        return mapaGrupos.get("H" + c.fila + "," + c.col);
     }
 
     /**
@@ -173,7 +173,7 @@ public class Tablero {
      * @return Grupo vertical que contiene esta celda
      */
     public GrupoSuma getGrupoVertical(Celda c) {
-        return mapaRuns.get("V" + c.fila + "," + c.col);
+        return mapaGrupos.get("V" + c.fila + "," + c.col);
     }
 
     /**
@@ -196,11 +196,11 @@ public class Tablero {
      */
     public boolean validarSumasCompletas() {
         // Verificar todos los grupos horizontales
-        for (GrupoSuma grupo : runsHorizontales) {
+        for (GrupoSuma grupo : gruposHorizontales) {
             if (!Validador.sumaEsValida(grupo)) return false;
         }
         // Verificar todos los grupos verticales
-        for (GrupoSuma grupo : runsVerticales) {
+        for (GrupoSuma grupo : gruposVerticales) {
             if (!Validador.sumaEsValida(grupo)) return false;
         }
         return true;
