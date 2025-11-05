@@ -1,9 +1,10 @@
 import java.util.List;
 
 /**
- * Representa un grupo de celdas consecutivas (anteriormente llamado "Run").
+ * Grupo de celdas que deben sumar un objetivo (horizontal o vertical).
  *
- * Un grupo puede ser horizontal o vertical y tiene una suma objetivo.
+ * - `sumaObjetivo`: valor que deben sumar las celdas del grupo.
+ * - `celdas`: lista de `Celda` consecutivas.
  */
 public class GrupoSuma {
     /** Suma objetivo que deben alcanzar las celdas del grupo */

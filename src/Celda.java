@@ -1,12 +1,8 @@
 /**
- * Representa una celda blanca del tablero de Kakuro.
- * 
- * Cada celda tiene:
- * - Posición: fila y columna en el tablero
- * - Valor: número del 1 al 9, o 0 si está vacía
- * 
- * Las celdas blancas son las que el algoritmo de backtracking debe completar.
- * Cada celda blanca pertenece exactamente a un grupo horizontal y uno vertical.
+ * Celda blanca del Kakuro: posición y valor.
+ *
+ * - `fila`, `col`: coordenadas 0-index.
+ * - `valor`: 0 si está vacía, 1-9 cuando se asigna.
  */
 public class Celda {
     /** Fila de la celda en el tablero (0-indexed) */

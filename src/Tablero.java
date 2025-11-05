@@ -3,17 +3,13 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Representa el tablero de Kakuro y gestiona la carga desde archivo.
- * 
- * El tablero almacena:
- * - Matriz de celdas (blancas para completar, negras para claves/pistas)
- * - Grupos horizontales y verticales (grupos de celdas que deben sumar un objetivo)
- * - Mapa para acceso rápido a los grupos de cada celda
- * 
- * Formato del archivo de entrada (kakuro.txt):
- * - "X" = celda negra (no se completa)
-* - "0" = celda blanca (vacía, se debe completar con 1-9)
- * - "n/m" = celda con claves: n=suma vertical (hacia abajo), m=suma horizontal (derecha)
+ * Tablero de Kakuro: carga, estructura y utilidades de impresión.
+ *
+ * Contrato corto:
+ * - Entrada: archivo con tokens ("X", "0", "n/m").
+ * - Salida: estructura con celdas blancas y grupos horizontales/verticales.
+ *
+ * Ejemplo de uso: Tablero t = Tablero.leerDesdeArchivo("src/kakuro_ejemplo.txt");
  */
 
 public class Tablero {
@@ -35,8 +31,8 @@ public class Tablero {
     * 4. Construye grupos horizontales (hacia la derecha) y verticales (hacia abajo)
     * 5. Valida que cada celda blanca pertenezca exactamente a 1 grupo H y 1 grupo V
      * 
-    * @param archivo Ruta del archivo con el tablero (ej: "src/kakuro.txt")
-     * @return Tablero construido, o null si hay errores de formato/parsing
+    * @param archivo Ruta del archivo con el tablero (ej: "src/kakuro.txt").
+    * @return Tablero construido o null si hay error de formato.
      */
     public static Tablero leerDesdeArchivo(String archivo) {
         try {
@@ -177,22 +173,11 @@ public class Tablero {
     }
 
     /**
-    * Valida que todos los grupos del tablero cumplan sus restricciones:
-    * - La suma de las celdas debe igualar el objetivo
-    * - No puede haber números repetidos en un grupo
-     * 
-     * Se usa al final del backtracking para verificar la solución completa.
-     * 
-     * @return true si todas las sumas son válidas, false en caso contrario
-     */
-    /**
-    * Valida que todos los grupos del tablero cumplan sus restricciones:
-    * - La suma de las celdas debe igualar el objetivo
-    * - No puede haber números repetidos en un grupo
-     * 
-     * Se usa al final del backtracking para verificar la solución completa.
-     * 
-     * @return true si todas las sumas son válidas, false en caso contrario
+     * Verifica que todos los grupos (H y V) cumplan sus restricciones finales.
+     * - Cada grupo debe estar completo y sumar exactamente su objetivo.
+     * - No se permiten números repetidos en un grupo.
+     *
+     * @return true si el tablero es una solución válida.
      */
     public boolean validarSumasCompletas() {
         // Verificar todos los grupos horizontales
@@ -215,13 +200,9 @@ public class Tablero {
      * - Números 1-9 = celdas completadas
      */
     /**
-     * Imprime una representación del tablero en consola mostrando las claves
-     * (tokens originales) y, opcionalmente, la solución en las celdas blancas.
-     * 
-     * - Si `mostrarSolucion` es false: las celdas blancas se muestran como "."
-     * - Si `mostrarSolucion` es true: las celdas blancas muestran su valor si
-     *   ya fueron resueltas (valor != 0) o "." si siguen vacías.
-     * - Las celdas negras con claves se muestran con el token original (ej "12/0").
+     * Imprime el tablero mostrando las claves (tokens originales).
+     *
+     * @param mostrarSolucion Si true muestra los valores de las celdas blancas.
      */
     public void imprimirConClaves(boolean mostrarSolucion) {
         // Ancho fijo por celda para alinear la impresión
@@ -273,8 +254,7 @@ public class Tablero {
     }
 
     /**
-     * Centra el texto dentro de un campo de ancho fijo. Si el texto es más largo
-     * que el ancho, se devuelve truncado a la longitud máxima.
+     * Centra un texto en un campo de ancho fijo (utilidad para impresión).
      */
     private String padCenter(String s, int width) {
         if (s == null) s = "";

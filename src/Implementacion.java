@@ -1,7 +1,11 @@
 import java.util.List;
 
 /**
- * Clase que resuelve un tablero de Kakuro utilizando el algoritmo de Backtracking.
+ * Solver de Kakuro usando backtracking simple.
+ *
+ * Contrato:
+ * - Entrada: `Tablero` con celdas y grupos ya construidos.
+ * - Salida: boolean indicando si encontró solución (los valores quedan en las celdas).
  */
 public class Implementacion {
     private Tablero tablero;
@@ -26,7 +30,8 @@ public class Implementacion {
     }
 
     /**
-     * Algoritmo de backtracking recursivo.
+     * Backtracking recursivo: asigna valores 1..9 a las celdas blancas.
+     * Usa `Validador.esValido` para poda temprana.
      */
     private boolean backtrack(int idx) {
         contadorLlamadas++;  // Contar llamada recursiva para análisis

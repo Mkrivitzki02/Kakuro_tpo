@@ -1,12 +1,10 @@
 import java.util.HashSet;
 
 /**
- * Clase que implementa las funciones de validación de restricciones del Kakuro.
- * 
- * Las restricciones principales son:
- * 1. Los números en cada grupo deben sumar el valor objetivo
- * 2. No puede haber números repetidos dentro de un grupo
- * 3. La suma parcial no debe exceder el valor objetivo (poda temprana)
+ * Validaciones para Kakuro: comprueba restricciones por grupo.
+ *
+ * - Evita duplicados en un grupo.
+ * - Prueba poda por suma parcial (suma parcial <= objetivo).
  */
 public class Validador {
     
@@ -24,15 +22,13 @@ public class Validador {
     }
 
     /**
-    * Verifica si un grupo es válido parcialmente.
-     * 
-     * Restricciones verificadas:
-     * - No hay números repetidos
-     * - La suma parcial no excede el objetivo (permite poda temprana)
-     * - Si está completo, la suma debe ser exactamente igual al objetivo
-     * 
-    * @param grupo El grupo a validar
-     * @return true si el grupo es válido (o potencialmente válido), false si viola restricciones
+     * Valida un grupo de forma parcial o completa.
+     * - Si hay celdas vacías: asegura que no haya repetidos y que la suma parcial
+     *   no exceda el objetivo (para podar en backtracking).
+     * - Si está completo: exige que la suma sea exactamente la objetivo.
+     *
+     * @param grupo Grupo a validar
+     * @return true si el grupo cumple las reglas o aún puede cumplirse.
      */
     private static boolean grupoEsValido(GrupoSuma grupo) {
         HashSet<Integer> usados = new HashSet<>();
@@ -67,7 +63,7 @@ public class Validador {
      * Verifica si un grupo está completo y cumple todas las restricciones.
      * 
     * @param grupo El grupo a validar
-     * @return true si el grupo está completo y es válido
+    * @return true si el grupo está completo y su suma coincide con el objetivo
      */
     public static boolean sumaEsValida(GrupoSuma grupo) {
         int suma = 0;

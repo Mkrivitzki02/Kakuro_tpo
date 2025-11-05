@@ -1,11 +1,7 @@
 /**
- * Programa principal para resolver tableros de Kakuro usando Backtracking.
- * 
- * Trabajo Práctico Obligatorio - Programación III
- * Tema 2: KAKURO
- * 
- * El programa lee un tablero desde un archivo, aplica el algoritmo de backtracking
- * para encontrar una solución válida, y muestra estadísticas de ejecución.
+ * Programa principal para resolver archivos de Kakuro con backtracking.
+ *
+ * Uso rápido: java Main src/kakuro_ejemplo.txt
  */
 public class Main {
     public static void main(String[] args) {
