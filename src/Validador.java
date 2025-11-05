@@ -18,8 +18,8 @@ public class Validador {
      * @return true si el valor en la celda es válido, false en caso contrario
      */
     public static boolean esValido(Tablero t, Celda c) {
-        Run runH = t.getRunHorizontal(c);
-        Run runV = t.getRunVertical(c);
+        GrupoSuma runH = t.getRunHorizontal(c);
+        GrupoSuma runV = t.getRunVertical(c);
         return runEsValido(runH) && runEsValido(runV);
     }
 
@@ -34,7 +34,7 @@ public class Validador {
      * @param run El grupo a validar
      * @return true si el grupo es válido (o potencialmente válido), false si viola restricciones
      */
-    private static boolean runEsValido(Run run) {
+    private static boolean runEsValido(GrupoSuma run) {
         HashSet<Integer> usados = new HashSet<>();
         int suma = 0;
         int vacias = 0;
@@ -69,7 +69,7 @@ public class Validador {
      * @param run El grupo a validar
      * @return true si el grupo está completo y es válido
      */
-    public static boolean sumaEsValida(Run run) {
+    public static boolean sumaEsValida(GrupoSuma run) {
         int suma = 0;
         HashSet<Integer> usados = new HashSet<>();
         

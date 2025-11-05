@@ -20,10 +20,10 @@ public class Tablero {
     private Celda[][] matriz;
     // Tokens originales leídos del archivo (ej: "X", ".", "12/0")
     private String[][] tokensOriginal;
-    private List<Run> runsHorizontales = new ArrayList<>();
-    private List<Run> runsVerticales = new ArrayList<>();
+    private List<GrupoSuma> runsHorizontales = new ArrayList<>();
+    private List<GrupoSuma> runsVerticales = new ArrayList<>();
     private List<Celda> celdasBlancas = new ArrayList<>();
-    private Map<String, Run> mapaRuns = new HashMap<>();
+    private Map<String, GrupoSuma> mapaRuns = new HashMap<>();
 
     /**
      * Lee y construye un tablero de Kakuro desde un archivo de texto.
@@ -97,9 +97,9 @@ public class Tablero {
                                 col++;
                             }
                             if (!celdas.isEmpty()) {
-                                Run run = new Run(sumaH, celdas);
+                                GrupoSuma run = new GrupoSuma(sumaH, celdas);
                                 t.runsHorizontales.add(run);
-                                // Mapear cada celda a su run horizontal
+                                // Mapear cada celda a su grupo horizontal
                                 for (Celda c : celdas) {
                                     t.mapaRuns.put("H" + c.fila + "," + c.col, run);
                                 }
@@ -116,9 +116,9 @@ public class Tablero {
                                 fil++;
                             }
                             if (!celdas.isEmpty()) {
-                                Run run = new Run(sumaV, celdas);
+                                GrupoSuma run = new GrupoSuma(sumaV, celdas);
                                 t.runsVerticales.add(run);
-                                // Mapear cada celda a su run vertical
+                                // Mapear cada celda a su grupo vertical
                                 for (Celda c : celdas) {
                                     t.mapaRuns.put("V" + c.fila + "," + c.col, run);
                                 }
@@ -162,7 +162,7 @@ public class Tablero {
      * @param c Celda de la cual obtener el run horizontal
      * @return Run horizontal que contiene esta celda
      */
-    public Run getRunHorizontal(Celda c) {
+    public GrupoSuma getRunHorizontal(Celda c) {
         return mapaRuns.get("H" + c.fila + "," + c.col);
     }
 
@@ -172,7 +172,7 @@ public class Tablero {
      * @param c Celda de la cual obtener el run vertical
      * @return Run vertical que contiene esta celda
      */
-    public Run getRunVertical(Celda c) {
+    public GrupoSuma getRunVertical(Celda c) {
         return mapaRuns.get("V" + c.fila + "," + c.col);
     }
 
@@ -196,11 +196,11 @@ public class Tablero {
      */
     public boolean validarSumasCompletas() {
         // Verificar todos los runs horizontales
-        for (Run run : runsHorizontales) {
+        for (GrupoSuma run : runsHorizontales) {
             if (!Validador.sumaEsValida(run)) return false;
         }
         // Verificar todos los runs verticales
-        for (Run run : runsVerticales) {
+        for (GrupoSuma run : runsVerticales) {
             if (!Validador.sumaEsValida(run)) return false;
         }
         return true;
