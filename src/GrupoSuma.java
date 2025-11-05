@@ -1,7 +1,7 @@
 import java.util.List;
 
 /**
- * Representa un grupo de celdas consecutivas (antes llamado "Run").
+ * Representa un grupo de celdas consecutivas (anteriormente llamado "Run").
  *
  * Un grupo puede ser horizontal o vertical y tiene una suma objetivo.
  */

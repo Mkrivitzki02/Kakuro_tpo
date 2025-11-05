@@ -31,7 +31,7 @@ public class Validador {
      * - La suma parcial no excede el objetivo (permite poda temprana)
      * - Si está completo, la suma debe ser exactamente igual al objetivo
      * 
-    * @param run El grupo a validar
+    * @param grupo El grupo a validar
      * @return true si el grupo es válido (o potencialmente válido), false si viola restricciones
      */
     private static boolean grupoEsValido(GrupoSuma grupo) {
@@ -66,7 +66,7 @@ public class Validador {
     /**
      * Verifica si un grupo está completo y cumple todas las restricciones.
      * 
-     * @param run El grupo a validar
+    * @param grupo El grupo a validar
      * @return true si el grupo está completo y es válido
      */
     public static boolean sumaEsValida(GrupoSuma grupo) {

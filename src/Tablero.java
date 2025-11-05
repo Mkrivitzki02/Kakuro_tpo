@@ -77,7 +77,7 @@ public class Tablero {
                 }
             }
 
-            // PASO 3: Crear runs desde celdas con claves (formato "sumaVertical/sumaHorizontal")
+            // PASO 3: Crear grupos desde celdas con claves (formato "sumaVertical/sumaHorizontal")
             for (int i = 0; i < filas; i++) {
                 for (int j = 0; j < columnas; j++) {
                     String token = lineas.get(i)[j];
@@ -186,9 +186,9 @@ public class Tablero {
      * @return true si todas las sumas son válidas, false en caso contrario
      */
     /**
-     * Valida que todos los runs del tablero cumplan sus restricciones:
-     * - La suma de las celdas debe igualar el objetivo
-     * - No puede haber números repetidos en un run
+    * Valida que todos los grupos del tablero cumplan sus restricciones:
+    * - La suma de las celdas debe igualar el objetivo
+    * - No puede haber números repetidos en un grupo
      * 
      * Se usa al final del backtracking para verificar la solución completa.
      * 
